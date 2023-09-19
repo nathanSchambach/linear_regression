@@ -1,0 +1,63 @@
+
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(openintro)
+state_violence <- read.csv("C:/Users/natha/OneDrive/Desktop/Southern/Spring 22/Math 326/Pres_02/state_violence.csv")
+attach(state_violence)
+```
+
+### Summary
+
+```{r code 1}
+summary(state_violence)
+```
+
+
+### Histograms
+
+Histograms of unemployment, Population, and violent total
+
+```{r code 2}
+hist(unemployment)
+hist(Population)
+hist(violent.total)
+```
+
+
+### First order
+
+This is the code for the first order model
+
+```{r code 4}
+lmfirst=lm(violent.total~state+Population+unemployment)
+slmfirst=summary(lmfirst)
+slmfirst
+```
+
+
+### Second order
+
+This is the code for the second order model
+
+```{r code 5}
+popBYunem=Population*unemployment
+popsqd=Population^2
+unemsqd=unemployment^2
+lmsecond=lm(violent.total~state+Population+unemployment+popBYunem+popsqd+unemsqd)
+slmsecond=summary(lmsecond)
+slmsecond
+```
+
+
+### Plot of the residuals
+
+Insert any text here.
+
+```{r code 6}
+sresfirst=rstandard(lmfirst)
+plot(sresfirst~lmfirst$fitted.values)
+hist(sresfirst)
+plot(lmfirst$fitted.values~violent.total)
+abline(0,1,col="red")
+```
+
