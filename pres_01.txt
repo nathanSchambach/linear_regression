@@ -1,0 +1,79 @@
+### FG vs 3PA
+
+Outliers at .401 and .545, but shouldn't affect the graph due to the number of data points. The slope is very small, only -0.0000106. Which means for ever 1 three pointer attempted the FG percentage goes down by the previously stated amount. The coeffient determinant is 0.1378 which means 13.78% of the sample variation in FG percentage is explained by three pointers attempted. We are 95% sure the slope is somewhere between -0.0000091 and -0.000012 The data is showing a very small amount of impact but it is negative which means we cannot disregard that the number of threes attempted having an impact on the field goal percentage .
+
+```{r code 1}
+lmfg=lm(FG_Percent~X3PA)
+plot(FG_Percent~X3PA)
+abline(lmfg,col="red")
+slmfg=summary(lmfg)
+slmfg
+codfg=slmfg$r.squared
+codfg
+cifg=confint(lmfg,'X3PA',.95)
+cifg
+```
+
+
+### FG vs Season
+
+There are the same outliers as the last graph because FG_Percentage is the response variable again, but again it shouldn't affect the graph due to the number of data points. The slope is very small, only -0.00078. Which means for ever 1 season the FG percentage goes down by the previously stated amount. The coeffient determinant is 0.2078 which means 20.78% of the sample variation in FG percentage is explained by the season it was played in. We are 95% sure the slope is somewhere between -.00070 and -.00087. The data is showing a very small amount of impact but it is negative which means again we cannot disregard that the number of seasons played has an impact on the field goal percentage.
+
+```{r code 2}
+lms=lm(FG_Percent~Season)
+plot(FG_Percent~Season)
+abline(lms,col="red")
+slms=summary(lms)
+slms
+cods=slms$r.squared
+cods
+cis=confint(lms,'Season',.95)
+cis
+```
+
+
+### 3PA vs Season
+
+Outliers at 3721 and 75, but again it shouldn't affect the graph due to the number of data points. I think it just speaks more towards the trend of the number of three pointers attempted per season. The slope is growing at a consistant rate over time, the slope is 53.77. Which means for ever 1 season the goes up by the previously stated amount. The coeffient determinant is 0.8064 which means 80.64% of the sample variation in FG percentage is explained by the season it was played in. This means there is a much stronger correlation between the number of threes attempted and the seasons played. We are 95% sure the slope is somewhere between 52.30 and 55.24. The data is showing a much larger impact than the last two models but with the positive slope and the strong correlation it can be assumed that the number of seasons played has had an impact on the number of threes attempted.
+
+```{r code 3}
+lm3PA=lm(X3PA~Season)
+plot(X3PA~Season)
+abline(lm3PA,col="red")
+slm3PA=summary(lm3PA)
+slm3PA
+cod3PA=slm3PA$r.squared
+cod3PA
+ci3PA=confint(lm3PA,'Season',.95)
+ci3PA
+```
+
+
+### Residuals Analysis
+
+The residuals on all of these are pretty poor, 3PA vs Season probably have the best residuals falling between -3 and 4 with a couple outliers above 4. 3PA vs FG% has no pattern at all but has no outliers outside of 4.
+
+
+```{r code 4}
+stdresfg=rstandard(lmfg)
+plot(X3PA,stdresfg)
+stdresS=rstandard(lms)
+plot(Season,stdresS)
+stdres3PA=rstandard(lm3PA)
+plot(Season,stdres3PA)
+```
+
+
+### Sample vs Theoretical
+
+3 PA vs FG% and Season vs FG% show good agreement with an outlier probably the season where .545 or 54.5% was the shooting percentage. The Season vs 3PA shows some agreement but tails off at the end with some large outliers at the end the furthest one probably the season where 3721 threes were shot.
+
+
+```{r code 5}
+qqnorm(stdresfg)
+qqline(stdresfg,col="red")
+qqnorm(stdresS)
+qqline(stdresS,col="red")
+qqnorm(stdres3PA)
+qqline(stdres3PA,col="red")
+```
